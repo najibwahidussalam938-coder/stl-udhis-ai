@@ -1,0 +1,855 @@
+<!DOCTYPE html><html lang="id"><head><style id="ultra-critical">:root{--quantum-layer1:#6366f1;--quantum-layer2:#8b5cf6;--quantum-layer3:#a855f7;--quantum-layer4:#d946ef;--quantum-layer5:#ec4899;--quantum-layer6:#f472b6;--quantum-layer7:#fdf2f8;--quantum-layer8:#fafafa;--quantum-primary:var(--quantum-layer1);--quantum-secondary:var(--quantum-layer2);--quantum-accent:var(--quantum-layer3);--quantum-bg:#0f0f23;--quantum-card:#1a1b2f;--quantum-surface:#252641;--quantum-border:rgba(99,102,241,0.3);--quantum-text:#e2e8f0;--quantum-glow:0 0 40px rgba(99,102,241,0.4);--quantum-gradient-primary:linear-gradient(135deg,var(--quantum-layer1) 0%,var(--quantum-layer3) 50%,var(--quantum-layer5) 100%);--quantum-gradient-secondary:linear-gradient(135deg,var(--quantum-layer2) 0%,var(--quantum-layer4) 100%);--quantum-gradient-bg:radial-gradient(ellipse at top,#1e1b4b,#0f0f23);--quantum-font-primary:'Inter','Segoe UI',system-ui,sans-serif;--quantum-font-display:'Orbitron','JetBrains Mono',monospace;--quantum-font-code:'JetBrains Mono','Fira Code',monospace;--quantum-font-poppins:'Poppins',sans-serif;--quantum-font-nunito:'Nunito Sans',sans-serif;--quantum-font-playfair:'Playfair Display',serif;--quantum-font-rajdhani:'Rajdhani',sans-serif;--quantum-font-raleway:'</style><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#000000"><title>stl-UDHIS | Quantum AI Assistant Platform</title><script src="https://cdn.tailwindcss.com">
+
+// Helper: insert card after marker comment 
+function insertCardAfterMarker(card, sidebar){
+  try{
+    // search for comment node marker inside sidebar
+    var walker = document.createTreeWalker(sidebar, NodeFilter.SHOW_COMMENT, null, false);
+    var marker = null;
+    while(walker.nextNode()){
+      var n = walker.currentNode;
+      if(n && n.nodeValue && n.nodeValue.indexOf('INSERT_INJECTION_AFTER_EXPORT_DATA') !== -1){
+        marker = n;
+        break;
+      }
+    }
+    if(marker && marker.parentNode){
+      marker.parentNode.insertBefore(card, marker.nextSibling);
+      return;
+    }
+  }catch(e){
+    console.warn('insertCardAfterMarker fallback', e);
+  }
+  // fallback
+  try{ sidebar.appendChild(card); }catch(e){}
+}
+
+</script><script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script><script src="https://unpkg.com/axios/dist/axios.min.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><!--font-deferred--><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><!--font-deferred--><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><!--font-deferred-->
+<!-- Ultra-Lite Loader -->
+<link rel="preload" href="ultra_styles.css" as="style" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="ultra_styles.css"></noscript>
+<script>
+(function(){
+  // async load bundle
+  function loadScript(){ var s=document.createElement('script'); s.src='ultra_bundle.js'; s.defer=true; document.head.appendChild(s); }
+  if(window.requestIdleCallback) requestIdleCallback(loadScript,{timeout:2000}); else setTimeout(loadScript,800);
+  // lazy load deferred fonts if device seems capable
+  try{
+    var caps = (function(){ try{ return window.__NAJIB_CAPS||{profile:'low'}; }catch(e){return {profile:'low'};} })();
+    if(caps.profile!=='low'){ var l=document.createElement('link'); l.href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap'; l.rel='stylesheet'; document.head.appendChild(l); }
+  }catch(e){}
+})();
+</script>
+<!-- End Ultra-Lite Loader -->
+</head><body class="theme-dark"><!--font-deferred--><link href="https://fonts.cdnfonts.com/css/eternal" rel="stylesheet"><style id="stl-ultra-style">
+:root{
+  --gold1:#ffdd6a;
+  --gold2:#fff7e6;
+  --cyber1:#4cdfff;
+  --cyber2:#7d5fff;
+  --bg:#000000;
+}
+
+/* full takeover */
+#stl-open{position:fixed;inset:0;z-index:2147483000;background:var(--bg);
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+overflow:hidden;pointer-events:auto}
+
+/* scanline (slow) */
+#stl-scan{position:absolute;left:0;width:100%;height:1px;
+background:linear-gradient(90deg,transparent,rgba(76,223,255,0.08),transparent);
+opacity:0.28;animation:stl-scan 4.6s linear infinite;mix-blend-mode:screen;pointer-events:none}
+@keyframes stl-scan{0%{top:-6%}100%{top:106%}}
+
+/* ambient runes */
+#stl-runes{position:absolute;inset:0;pointer-events:none;opacity:0.04;
+font-family:monospace;color:var(--cyber1);white-space:pre;display:block;
+mix-blend-mode:screen}
+@keyframes runeF{0%{opacity:0.02}50%{opacity:0.06}100%{opacity:0.02}}
+
+/* glyph */
+#stl-title{
+  font-family:'Eternal','Oxanium',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+  font-size:clamp(3.4rem,10vw,9.5rem);
+  font-weight:900;line-height:1;white-space:nowrap;letter-spacing:0.12em;
+  text-align:center;opacity:0;transform:scale(0.72);will-change:transform,opacity,filter;
+  background:linear-gradient(120deg,var(--gold1)0%,var(--gold2)45%,var(--cyber1)75%,var(--cyber2)100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  -webkit-text-stroke:2.8px rgba(255,220,140,0.78);
+  text-shadow:0 6px 8px rgba(0,0,0,0.95),
+               0 12px 32px rgba(255,190,80,0.50),
+               0 0 36px rgba(76,223,255,0.32),
+               0 0 56px rgba(125,95,255,0.22);
+}
+
+/* tagline */
+#stl-tag{
+  font-family:'Oxanium','Orbitron',system-ui,-apple-system,Arial;
+  font-size:clamp(0.95rem,2vw,1.6rem);font-weight:800;white-space:nowrap;
+  margin-top:14px;letter-spacing:0.22em;opacity:0;
+  color:rgba(255,245,220,0.88);
+  text-shadow:0 0 18px rgba(255,220,120,0.22);
+  will-change:opacity;
+}
+
+/* breathing glow */
+@keyframes stl-breathe{
+  0%{filter:drop-shadow(0 6px 18px rgba(255,200,110,0.22))}
+  50%{filter:drop-shadow(0 10px 30px rgba(255,220,130,0.38))}
+  100%{filter:drop-shadow(0 6px 18px rgba(255,200,110,0.22))}
+}
+
+/* fractal spark */
+.stl-fractal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+pointer-events:none;width:1px;height:1px;
+box-shadow:0 -40px 20px rgba(255,220,110,0.14),
+60px -20px 18px rgba(76,223,255,0.08),
+-52px 26px 16px rgba(125,95,255,0.06),
+28px 44px 22px rgba(255,220,110,0.06);
+opacity:0;transition:opacity .9s ease}
+
+/* responsive */
+@media (max-width:768px){
+  #stl-title{white-space:normal;display:flex;flex-direction:column;
+    align-items:center;line-height:1.1;
+    font-size:clamp(1.8rem,9.5vw,4.8rem);}
+}
+@media (min-width:769px){
+  #stl-open{align-items:center;justify-content:center;padding:0 6vw;}
+  #stl-title{max-width:90%;white-space:nowrap;
+    font-size:clamp(3.4rem,8vw,9.5rem);}
+}
+
+/* breathing glow on */
+#stl-title.glow-active{
+  animation:stl-breathe 9s ease-in-out infinite;
+  filter:drop-shadow(0 10px 28px rgba(125,95,255,0.18));
+}
+
+/* chromatic flash */
+.stl-chromatic{
+  mix-blend-mode:screen;pointer-events:none;position:fixed;inset:0;
+  z-index:2147483002;opacity:0;transition:opacity .18s linear;
+}
+</style><div id="stl-open" aria-hidden="false" role="dialog"><div id="stl-scan" aria-hidden="true"></div><pre id="stl-runes" aria-hidden="true" style="animation:runeF 2.4s infinite alternate;">⟡⟰⟒⟊⟟⟁</pre><div id="stl-title">⟁⟣⟢  ⋮  ⟑⟄⟉⟞⟉⟉  ⟣⟢  ⟖⟒⟚⟉⟄⟒⟝</div><div id="stl-tag">ASCEND BEYOND CODE</div><div class="stl-fractal" aria-hidden="true"></div></div><div class="quantum-neural-background"><div class="neural-network"></div><div class="quantum-particles" id="quantumParticles"></div></div><div id="quantumIsland" class="quantum-island"><div class="pulse-dot"></div><span id="islandMessage">stl-AIchat Ready</span></div><div id="quantumHomeBase" class="quantum-home-base"><div class="quantum-home-logo"><div class="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center shadow-2xl"><i class="fas fa-brain text-white text-5xl"></i></div></div><h1 class="quantum-home-title">STL-UDHIS AI</h1><p class="quantum-home-subtitle">Quantum AI Assistant Platform with advanced neural interface and real-time processing capabilities</p><div class="quantum-home-buttons"><button id="openAIChat" class="quantum-home-btn ai-chat"><i class="fas fa-robot mr-2"></i> Start Chat
+            </button><button id="openDeveloper" class="quantum-home-btn developer"><i class="fas fa-code mr-2"></i> Developer Info
+            </button></div></div><div id="quantumAIChat" class="quantum-chat-container"><div class="quantum-chat-header"><div><h3 class="text-lg font-black">stl-AI Assistant</h3><p class="text-sm opacity-90">Quantum interface active</p></div></div><div class="quantum-chat-messages" id="quantumChatMessages"><div class="quantum-message system"><p>🚀 <strong>stl-AIchat Initialized</strong></p><p class="text-sm mt-1">Configure your API key to begin conversations with advanced AI models.</p></div></div><div class="quantum-chat-input-container"><div class="quantum-chat-input-row"><div class="flex-1"><textarea id="quantumChatInput" 
+                              placeholder="Enter your message to stl-AI..." 
+                              class="quantum-input" 
+                              rows="3"
+                              enable></textarea></div><button id="sendQuantumMessage" class="quantum-btn primary" enable><i class="fas fa-paper-plane"></i></button></div><div class="quantum-chat-actions"><button id="voiceInput" class="quantum-btn secondary compact" enable><i class="fas fa-microphone"></i></button><div class="flex-1"></div></div></div></div><div id="quantumDeveloperPanel" class="quantum-developer-panel"><div class="quantum-developer-content"><div class="text-center mb-8"><div class="w-32 h-32 mx-auto mb-4 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center shadow-2xl"><img src="https://pfst.cf2.poecdn.net/base/image/450b057a0166b3d912e628ec6196299c9664597953096114352df3ff0dadf34f?w=3100&h=3100" alt="NAJIB AI BRAIN Logo" class="w-full h-full object-contain rounded-full"></div><h4 class="text-xl font-black text-white mb-2">Muhammad Najib Wahidus Salam, S.Pd, Gr.</h4><p class="text-lg text-purple-600 mb-3 font-semibold">Quantum Mathematics Educator & AI Architect</p></div><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="quantum-card p-5"><h5 class="text-lg font-black text-blue-600 mb-3">Tentang Developer</h5><ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300"><li class="flex items-center"><i class="fas fa-map-marker-alt mr-3 text-blue-500"></i>
+                            Sidoarjo, Indonesia
+                        </li><li class="flex items-center"><i class="fas fa-graduation-cap mr-3 text-green-500"></i>
+                            S1-PGSD (2014-2021)
+                        </li><li class="flex items-center"><i class="fas fa-certificate mr-3 text-purple-500"></i>
+                            PPG Prajabatan 2024
+                        </li><li class="flex items-center"><i class="fas fa-briefcase mr-3 text-yellow-500"></i>
+                            Non-ASN Teacher & AI Architect
+                        </li></ul></div><div class="quantum-card p-5"><h5 class="text-lg font-black text-green-600 mb-3">Spesialisasi</h5><ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300"><li class="flex items-center"><i class="fas fa-qrcode mr-3 text-blue-500"></i>
+                            Quantum QR Educational Technology
+                        </li><li class="flex items-center"><i class="fas fa-robot mr-3 text-purple-500"></i>
+                            AI-Powered Learning Systems
+                        </li><li class="flex items-center"><i class="fas fa-music mr-3 text-yellow-500"></i>
+                            Original Music & Content Creation
+                        </li><li class="flex items-center"><i class="fas fa-code mr-3 text-green-500"></i>
+                            Full-Stack Web Development
+                        </li></ul></div></div><div class="quantum-card p-5 mt-6"><h5 class="text-lg font-black text-purple-600 mb-3">Quantum AI Philosophy</h5><p class="text-sm text-gray-700 dark:text-gray-300">
+                    "Menggabungkan matematika kuantum dengan kecerdasan buatan untuk menciptakan sistem pembelajaran yang adaptif dan intuitif. 
+                    Setiap algoritma adalah seni, setiap kode adalah puisi, dan setiap interaksi adalah peluang untuk transformasi."
+                </p></div></div></div><div id="quantumToolsSidebar" class="quantum-tools-sidebar"><div class="flex justify-between items-center mb-8"><div class="flex items-center space-x-3"><div class="w-12 h-12 rounded-xl overflow-hidden bg-gradient-to-br from-purple-600 to-blue-600 shadow-lg flex items-center justify-center"><i class="fas fa-brain text-white text-xl"></i></div><div><h2 class="text-xl font-black text-white">stl-AIchat Tools</h2><p class="text-xs text-purple-300">AI Configuration</p></div></div><button id="closeToolsSidebar" class="quantum-btn danger"><i class="fas fa-times"></i></button></div><div class="space-y-6"><div class="quantum-card glass p-5"><h3 class="text-lg font-black text-white mb-4 flex items-center gap-2"><i class="fas fa-robot text-green-400"></i>
+                    AI Model Configuration
+                </h3><div class="space-y-4"><div class="grid grid-cols-2 gap-3"><div><label class="block text-sm font-medium text-purple-300 mb-2">Provider</label><select id="aiProvider" class="quantum-input glass"><option value="openai">OpenAI GPT-4</option><option value="anthropic">Anthropic Claude</option><option value="google">Google Gemini Pro</option><option value="custom">Custom Endpoint</option></select></div><div><label class="block text-sm font-medium text-purple-300 mb-2">Model</label><select id="aiModel" class="quantum-input glass"><option value="gpt-4">Custom</option><option value="gpt-3.5-turbo">GPT-3.5 Turbo</option><option value="claude-3">Claude 3 Opus</option><option value="gemini-pro">Gemini Pro</option></select></div></div><div><label class="block text-sm font-medium text-purple-300 mb-2">API Key</label><input type="password" id="aiApiKey" placeholder="sk-..." class="quantum-input glass"></div><div class="flex gap-3"><button id="saveAiConfig" class="quantum-btn success flex-1"><i class="fas fa-save"></i> Save Config
+                        </button><button id="testAiConfig" class="quantum-btn warning"><i class="fas fa-vial"></i> Test
+                        </button></div></div></div><div class="quantum-card glass p-5"><h3 class="text-lg font-black text-white mb-4 flex items-center gap-2"><i class="fas fa-microphone text-red-400"></i>
+                    Voice Interface
+                </h3><div class="space-y-4"><div class="flex items-center justify-between"><span class="text-sm text-purple-300">Voice Input</span><label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" id="voiceInputToggle" class="sr-only peer"><div class="w-11 h-6 bg-gray-700 peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div></label></div><div class="flex gap-3"><button id="testMic" class="quantum-btn primary flex-1"><i class="fas fa-microphone"></i> Test Microphone
+                        </button></div><div id="voiceStatus" class="text-sm text-blue-400">
+                        Voice interface ready
+                    </div></div></div><div class="quantum-card glass p-5"><h3 class="text-lg font-black text-white mb-4 flex items-center gap-2"><i class="fas fa-download text-yellow-400"></i>
+                    Export Data
+                </h3><div class="space-y-4"><div class="grid grid-cols-2 gap-3"><button id="exportChat" class="quantum-btn success"><i class="fas fa-file-export"></i> Export Chat
+                        </button><button id="exportLocalData" class="quantum-btn warning"><i class="fas fa-database"></i> Export Data
+                        </button></div><div class="grid grid-cols-2 gap-3"><button id="clearChat" class="quantum-btn danger"><i class="fas fa-trash"></i> Clear Chat
+                        </button><button id="clearLocalData" class="quantum-btn danger"><i class="fas fa-broom"></i> Clear Data
+                        </button></div></div></div></div></div><div id="quantumToolsOverlay" class="quantum-sidebar-overlay"></div><div id="quantumSidebarOverlay" class="quantum-sidebar-overlay"></div><div id="quantumSidebar" class="quantum-sidebar"><div class="flex justify-between items-center mb-8"><div class="flex items-center space-x-3"><div class="w-12 h-12 rounded-xl overflow-hidden bg-gradient-to-br from-purple-600 to-pink-600 shadow-lg flex items-center justify-center"><i class="fas fa-cogs text-white text-xl"></i></div><div><h2 class="text-xl font-black text-white">stl-AIchat Settings</h2><p class="text-xs text-purple-300">System Configuration</p></div></div><button id="closeQuantumSidebar" class="quantum-btn danger"><i class="fas fa-times"></i></button></div><div class="space-y-6"><div class="quantum-card glass p-5"><h3 class="text-lg font-black text-white mb-4"><i class="fas fa-palette mr-2 text-purple-400"></i>Quantum Themes
+                </h3><div class="grid grid-cols-2 gap-3" id="quantumThemeGrid"></div></div><div class="quantum-card glass p-5"><h3 class="text-lg font-black text-white mb-4"><i class="fas fa-user-astronaut mr-2 text-blue-400"></i>AI Personality
+                </h3><div class="space-y-4"><div><label class="block text-sm font-medium text-purple-300 mb-2">Assistant Name</label><input type="text" id="aiName" value="stl-AI" class="quantum-input glass"></div><div><label class="block text-sm font-medium text-purple-300 mb-2">Personality Type</label><select id="aiPersonality" class="quantum-input glass"><option value="professional">Professional</option><option value="friendly">Friendly</option><option value="technical">Technical</option><option value="creative">Creative</option><option value="humorous">Humorous</option><option value="Private">Private</option><option value="Deep Secret Private">Deep Secret Private</option><option value="Deep Explicit">Deep Explicit</option></select></div><div><label class="block text-sm font-medium text-purple-300 mb-2">Response Style</label><select id="aiResponseStyle" class="quantum-input glass"><option value="concise">Concise</option><option value="detailed">Detailed</option><option value="technical">Technical</option><option value="storytelling">Storytelling</option><option value="Loyal Submisive">Loyal submisive</option><option value="Humanoid Behavior">Humanoid behavior</option><option value="No Rules with Deal only for developer rules">No Rules with Deal only for developer rules</option></select></div></div></div><div class="quantum-card glass p-5"><h3 class="text-lg font-black text-white mb-4"><i class="fas fa-sliders-h mr-2 text-green-400"></i>Advanced Settings
+                </h3><div class="space-y-4"><div><label class="block text-sm font-medium text-purple-300 mb-2">Temperature: <span id="temperatureValue">0.7</span></label><input type="range" id="aiTemperature" min="0" max="1" step="0.1" value="0.7" class="w-full"></div><div><label class="block text-sm font-medium text-purple-300 mb-2">Max Tokens</label><input type="number" id="aiMaxTokens" value="2000" class="quantum-input glass"></div><div><label class="block text-sm font-medium text-purple-300 mb-2">System Prompt</label><textarea id="aiSystemPrompt" rows="4" class="quantum-input glass">You are stl-AI, an advanced AI assistant with deep knowledge across all domains. Provide helpful, accurate, and engaging responses.</textarea></div><button id="saveAdvancedSettings" class="quantum-btn primary w-full"><i class="fas fa-save"></i> Save Advanced Settings
+                    </button></div></div><div class="quantum-card glass p-5"><h3 class="text-lg font-black text-white mb-4"><i class="fas fa-microchip mr-2 text-yellow-400"></i>Device Info
+                </h3><div class="space-y-2 text-sm"><div class="flex justify-between"><span class="text-purple-300">Platform:</span><span id="devicePlatform" class="text-white">-</span></div><div class="flex justify-between"><span class="text-purple-300">Browser:</span><span id="deviceBrowser" class="text-white">-</span></div><div class="flex justify-between"><span class="text-purple-300">Language:</span><span id="deviceLanguage" class="text-white">-</span></div><div class="flex justify-between"><span class="text-purple-300">Cores:</span><span id="deviceCores" class="text-white">-</span></div><div class="flex justify-between"><span class="text-purple-300">Memory:</span><span id="deviceMemory" class="text-white">-</span></div></div><button id="scanDevice" class="quantum-btn secondary w-full mt-4"><i class="fas fa-search"></i> Full Device Scan
+                </button></div></div></div><button id="openToolsSidebar" class="toggle-btn toggle-left"><i class="fas fa-sliders-h"></i></button><button id="openQuantumSidebar" class="toggle-btn toggle-right"><i class="fas fa-cog"></i></button><button id="quantumHomeBtn" class="quantum-home-button"><i class="fas fa-home"></i></button></body>
+ --></body>
+ --></body></html>";
+    const sourceHTML = header + html + footer;
+    const blob = new Blob(['\ufeff', sourceHTML], { type: 'application/msword' });
+    // Use FileSaver.js if available
+    if (window.saveAs) {
+      saveAs(blob, `${filename}.doc`);
+    } else {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${filename}.doc`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+  }
+
+  /* -------------------------
+     QR Code generator (Google Chart API)
+  --------------------------*/
+  function generateQrImageUrl(text, size = 200) {
+    const encoded = encodeURIComponent(text);
+    return `https://chart.googleapis.com/chart?cht=qr&chs=${size}x${size}&chl=${encoded}&chld=L|1`;
+  }
+
+  /* -------------------------
+     Append AI Response to Chat + Inline Actions
+  --------------------------*/
+  function appendAiResponseToChat(contentHtml, rawTextForQr = '', filenameBase = 'RPP_Document') {
+    const messagesContainer = $('quantumChatMessages');
+    if (!messagesContainer) return;
+
+    const msgWrap = el('div', { class: 'quantum-message ai' });
+    // content can be HTML
+    const inner = el('div');
+    inner.innerHTML = contentHtml;
+    msgWrap.appendChild(inner);
+
+    // action buttons container (inline) — not global UI
+    const actions = el('div', { class: 'mt-3 flex gap-2' });
+
+    const previewBtn = el('button', { class: 'quantum-btn primary' });
+    previewBtn.style.padding = '6px 10px';
+    previewBtn.innerHTML = '<i class="fas fa-eye"></i> Preview';
+    previewBtn.addEventListener('click', () => createPreviewModal(contentHtml, filenameBase));
+
+    const pdfBtn = el('button', { class: 'quantum-btn secondary' });
+    pdfBtn.style.padding = '6px 10px';
+    pdfBtn.innerHTML = '<i class="fas fa-file-pdf"></i> PDF';
+    pdfBtn.addEventListener('click', async () => {
+      // create temporary element for rendering hidden
+      const tmp = el('div'); tmp.style.padding = '20px'; tmp.style.background='white'; tmp.innerHTML = contentHtml;
+      tmp.style.position = 'fixed'; tmp.style.left='-9999px'; document.body.appendChild(tmp);
+      await printHtmlToPdf(tmp, filenameBase);
+      tmp.remove();
+    });
+
+    const docBtn = el('button', { class: 'quantum-btn success' });
+    docBtn.style.padding = '6px 10px';
+    docBtn.innerHTML = '<i class="fas fa-file-word"></i> DOC';
+    docBtn.addEventListener('click', () => downloadDocFromHtml(contentHtml, filenameBase));
+
+    const qrBtn = el('button', { class: 'quantum-btn warning' });
+    qrBtn.style.padding = '6px 10px';
+    qrBtn.innerHTML = '<i class="fas fa-qrcode"></i> QR';
+    qrBtn.addEventListener('click', () => {
+      const url = generateQrImageUrl(rawTextForQr || contentHtml);
+      // show small modal with QR
+      const qrHtml = `<div style="text-align:center"><h4>QR untuk dokumen</h4><img src="${url}" style="max-width:220px"/><p style="font-size:12px;margin-top:8px">Scan untuk membuka/menyimpan</p></div>`;
+      createPreviewModal(qrHtml, 'QR Kode');
+    });
+
+    actions.appendChild(previewBtn);
+    actions.appendChild(pdfBtn);
+    actions.appendChild(docBtn);
+    actions.appendChild(qrBtn);
+
+    msgWrap.appendChild(actions);
+    messagesContainer.appendChild(msgWrap);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+  /* -------------------------
+     Integration: Hook send button & Enter
+  --------------------------*/
+  async function processInputAndMaybeCallAI(rawText) {
+    const intent = detectIntent(rawText);
+    // if no intent, just send as usual (let engine simulated or normal path)
+    if (!intent) {
+      // fallback: normal send (existing behavior)
+      if (window.quantumEngine && typeof window.quantumEngine.addMessageToChat === 'function') {
+        window.quantumEngine.addMessageToChat('user', rawText);
+      } else {
+        // directly append user message in chat
+        const messagesContainer = $('quantumChatMessages');
+        if (messagesContainer) {
+          const m = el('div', { class: 'quantum-message user', text: rawText });
+          messagesContainer.appendChild(m);
+        }
+      }
+      // no AI call from this injector
+      return;
+    }
+
+    // build params & prompt
+    const params = extractSimpleParams(rawText);
+    const prompt = buildPrompt(intent, params, rawText);
+
+    // show interim system message
+    const loadingMessage = el('div', { class: 'quantum-message system' });
+    loadingMessage.innerHTML = '<p>🔎 Memproses permintaan... Menghubungkan ke provider AI.</p>';
+    $('quantumChatMessages').appendChild(loadingMessage);
+    $('quantumChatMessages').scrollTop = $('quantumChatMessages').scrollHeight;
+
+    // call AI
+    const res = await callAI(prompt);
+    loadingMessage.remove();
+
+    if (res.error) {
+      // append error system + allow fallback simulated text
+      const errMsg = el('div', { class: 'quantum-message system' });
+      errMsg.innerHTML = `<p>⚠️ ${res.error}</p><p class="text-sm opacity-80">Jika kamu ingin, saya bisa menyimulasikan output RPP sementara (offline).</p>`;
+      $('quantumChatMessages').appendChild(errMsg);
+      // optionally simulate quick template
+      const sim = `<h3>Simulated ${intent.toUpperCase()}</h3><pre>${prompt}</pre>`;
+      appendAiResponseToChat(sim, prompt, `SIMULATED_${intent.toUpperCase()}`);
+      return;
+    }
+
+    const text = res.text || '';
+    // Render AI response as HTML — we try to convert newlines to <p>
+    const safeHtml = text
+      .split('\n\n')
+      .map(p => `<p style="margin:8px 0; white-space:pre-wrap;">${escapeHtml(p)}</p>`)
+      .join('');
+
+    const filenameBase = `${(params.kelas || 'Kelas')}_${intent.toUpperCase()}_${(params.topik || 'Topik').replace(/\s+/g,'_').slice(0,40)}`;
+    appendAiResponseToChat(safeHtml, text, filenameBase);
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>"']/g, (m) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[m]);
+  }
+
+  // Ensure we don't add multiple handlers
+  function attachHandlers() {
+    const sendBtn = $('sendQuantumMessage');
+    const inputEl = $('quantumChatInput');
+
+    if (!sendBtn || !inputEl) return;
+
+    // remove old injected handler if exists
+    if (sendBtn.__rpp_attached) {
+      // nothing
+    } else {
+      sendBtn.__rpp_attached = true;
+      sendBtn.addEventListener('click', async (e) => {
+        const val = (inputEl.value || '').trim();
+        if (!val) return;
+        inputEl.value = ''; // clear input early
+        // add user message to chat
+        if (window.quantumEngine && typeof window.quantumEngine.addMessageToChat === 'function') {
+          window.quantumEngine.addMessageToChat('user', val);
+        } else {
+          const messagesContainer = $('quantumChatMessages');
+          if (messagesContainer) {
+            const m = el('div', { class: 'quantum-message user' });
+            m.textContent = val;
+            messagesContainer.appendChild(m);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          }
+        }
+        await processInputAndMaybeCallAI(val);
+      });
+    }
+
+    // Enter key
+    if (!inputEl.__rpp_key_attached) {
+      inputEl.__rpp_key_attached = true;
+      inputEl.addEventListener('keypress', async (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          const val = (inputEl.value || '').trim();
+          if (!val) return;
+          inputEl.value = '';
+          if (window.quantumEngine && typeof window.quantumEngine.addMessageToChat === 'function') {
+            window.quantumEngine.addMessageToChat('user', val);
+          }
+          await processInputAndMaybeCallAI(val);
+        }
+      });
+    }
+  }
+
+  /* -------------------------
+     Save/Load AI Config Secure (optional)
+  --------------------------*/
+  function saveConfigEncrypted(passphrase) {
+    const cfg = {
+      provider: $('aiProvider') ? $('aiProvider').value : '',
+      model: $('aiModel') ? $('aiModel').value : '',
+      apiKey: $('aiApiKey') ? $('aiApiKey').value : '',
+      temperature: $('aiTemperature') ? $('aiTemperature').value : '',
+      maxTokens: $('aiMaxTokens') ? $('aiMaxTokens').value : ''
+    };
+    if (!window.CryptoJS) {
+      alert('CryptoJS tidak tersedia. Konfigurasi tidak disimpan terenkripsi.');
+      return;
+    }
+    const cipher = CryptoJS.AES.encrypt(JSON.stringify(cfg), passphrase).toString();
+    localStorage.setItem('quantum_ai_config_enc', cipher);
+    alert('Config tersimpan terenkripsi di localStorage.');
+  }
+  function loadConfigEncrypted(passphrase) {
+    try {
+      const cipher = localStorage.getItem('quantum_ai_config_enc');
+      if (!cipher) return null;
+      const bytes = CryptoJS.AES.decrypt(cipher, passphrase);
+      const txt = bytes.toString(CryptoJS.enc.Utf8);
+      return JSON.parse(txt || '{}');
+    } catch (err) {
+      return null;
+    }
+  }
+
+  // Expose small API to window for developer convenience
+  window.quantumRppToolkit = {
+    attachHandlers,
+    buildPrompt,
+    callAI,
+    saveConfigEncrypted,
+    loadConfigEncrypted,
+    generateQrImageUrl
+  };
+
+  // run attach handlers when DOM ready / engine ready
+  function tryInit() {
+    attachHandlers();
+  }
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(tryInit, 200);
+  } else {
+    document.addEventListener('DOMContentLoaded', tryInit);
+  }
+
+  // Also try re-attach when quantumEngine is present (in case it initializes later)
+  const checkEngineInterval = setInterval(() => {
+    if (window.quantumEngine) {
+      tryInit();
+      clearInterval(checkEngineInterval);
+    }
+  }, 500);
+
+  // Small UX note appended to tools sidebar (non-intrusive)
+  (function noticeInToolsSidebar(){
+    const tools = $('quantumToolsSidebar');
+    if (!tools) return;
+    const noteId = 'quantumRppNotice';
+    if (document.getElementById(noteId)) return;
+    const card = el('div', { class: 'quantum-card glass p-4', html: `
+      <h4 class="font-black mb-2">RPP / PROMES / LKPD Toolkit</h4><p class="text-sm opacity-80">Ketik perintah di kotak chat: contoh <em>"Buatkan RPP kelas 2 tentang pecahan"</em>. Gunakan API key di konfigurasi.</p><div class="flex gap-2 mt-3"><button id="quantumSaveConfigEnc" class="quantum-btn primary">Simpan Config Aman</button></div>
+    `});
+    card.id = noteId;
+    
+// ==== FORCE INSERT after "stl-AIchat Tools" header ====
+try {
+  (function(){
+    const sidebarEl = (typeof sidebar !== 'undefined' ? sidebar : (typeof tools !== 'undefined' ? tools : document.getElementById('quantumToolsSidebar')));
+    if (!sidebarEl) {
+      // fallback: try to find by id
+      sidebarEl = document.getElementById('quantumToolsSidebar') || document.querySelector('.quantum-tools-sidebar') || document.querySelector('.tools-sidebar');
+    }
+    if (sidebarEl && card) {
+      const headers = Array.from(sidebarEl.querySelectorAll('h3'));
+      let header = headers.find(h => h.innerText && h.innerText.toLowerCase().includes('stl-aichat tools'));
+      if (!header) {
+        // try alternative text match
+        header = headers.find(h => h.innerText && h.innerText.toLowerCase().includes('stl-aichat'));
+      }
+      if (header) {
+        const parentCard = header.closest('.quantum-card') || header.parentElement;
+        if (parentCard) {
+          parentCard.insertAdjacentElement('afterend', card);
+          console.log('✅ Card inserted after stl-AIchat Tools header');
+        } else {
+          sidebarEl.appendChild(card);
+          console.warn('⚠ parentCard not found; appended to sidebar');
+        }
+      } else {
+        // try to find Export Data card and insert after it
+        const exportCard = sidebarEl.querySelector('.quantum-card .fa-download') ? sidebarEl.querySelector('.quantum-card .fa-download').closest('.quantum-card') : null;
+        if (exportCard) {
+          exportCard.insertAdjacentElement('afterend', card);
+          console.log('✅ Card inserted after Export Data');
+        } else {
+          sidebarEl.appendChild(card);
+          console.warn('⚠ Header not found; appended to sidebar');
+        }
+      }
+    }
+  })();
+} catch(e){
+  try { sidebar.appendChild(card); } catch(err){ console.warn('final fallback append failed', err); }
+}
+
+    const saveBtn = document.getElementById('quantumSaveConfigEnc');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        const pass = prompt('Masukkan passphrase untuk enkripsi config (ingat passphrase ini):');
+        if (!pass) return alert('Dibatalkan.');
+        saveConfigEncrypted(pass);
+      });
+    }
+  })();
+
+})();
+</script></body></html>";
+    const sourceHTML = header + html + footer;
+    const blob = new Blob(['\ufeff', sourceHTML], { type: 'application/msword' });
+    if(window.saveAs) saveAs(blob, `${filename}.doc`);
+    else { const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `${filename}.doc`; document.body.appendChild(link); link.click(); link.remove(); }
+  }
+
+  function generateQrImageUrl(text, size=200){ const encoded = encodeURIComponent(text); return `https://chart.googleapis.com/chart?cht=qr&chs=${size}x${size}&chl=${encoded}&chld=L|1`; }
+
+  /* ----------------- attach behavior: integrate with input send flow (non-intrusive) ----------------- */
+  function attachIntegration(){
+    // create tiny trigger
+    createTinyTrigger();
+
+    // intercept Enter/send only to optionally open modal when command like "/buat" present — keep original behavior unchanged otherwise
+    const inputEl = $('quantumChatInput');
+    const sendBtn = $('sendQuantumMessage');
+    if(!inputEl || !sendBtn) return;
+
+    // Ensure single listener
+    if(!sendBtn.__rpp_v2_attached){
+      sendBtn.__rpp_v2_attached = true;
+      sendBtn.addEventListener('click', async (e)=>{
+        const val = (inputEl.value || '').trim();
+        if(!val) return;
+        // If user used slash command /buat or /rpp or /generate -> open modal prefilled
+        if(val.startsWith('/buat') || val.startsWith('/rpp') || val.startsWith('/generate') || val.startsWith('/create')){
+          // prefill modal with simple parse
+          const params = extractSimpleParams(val);
+          openDocModal();
+          // prefill fields after small delay (modal creation)
+          setTimeout(()=> {
+            if($('docKelas')) $('docKelas').value = params.kelas || 'Kelas 2';
+            if($('docMapel')) $('docMapel').value = params.mapel && params.mapel!=='{mapel}' ? params.mapel : '';
+            if($('docTopik')) $('docTopik').value = params.topik && params.topik!=='{topik}' ? params.topik : '';
+          }, 250);
+          inputEl.value = ''; // clear command
+          return;
+        }
+
+        // Otherwise preserve original behavior: add message and let quantumEngine handle (if exists)
+        if(window.quantumEngine && typeof window.quantumEngine.addMessageToChat === 'function'){
+          window.quantumEngine.addMessageToChat('user', val);
+        } else {
+          const m = el('div',{ class:'quantum-message user', text: val });
+          const msgs = $('quantumChatMessages'); if(msgs) msgs.appendChild(m);
+        }
+        inputEl.value = '';
+        // Additionally: if natural language contains RPP/PROMES keywords, open modal auto-fill (non-blocking)
+        const intent = detectIntent(val);
+        if(intent){
+          // auto open modal with prefilled values (but don't prevent normal send)
+          setTimeout(()=> {
+            openDocModal();
+            setTimeout(()=> {
+              const params = extractSimpleParams(val);
+              if($('docKelas')) $('docKelas').value = params.kelas || 'Kelas 2';
+              if($('docMapel')) $('docMapel').value = params.mapel && params.mapel!=='{mapel}' ? params.mapel : '';
+              if($('docTopik')) $('docTopik').value = params.topik && params.topik!=='{topik}' ? params.topik : '';
+            }, 250);
+          }, 200);
+        }
+      });
+    }
+
+    // Enter key - keep as existing but provide slash command support
+    if(!inputEl.__rpp_v2_key_attached){
+      inputEl.__rpp_v2_key_attached = true;
+      inputEl.addEventListener('keypress', async (e)=>{
+        if(e.key === 'Enter' && !e.shiftKey){
+          e.preventDefault();
+          const val = (inputEl.value || '').trim();
+          if(!val) return;
+          // same logic as sendBtn
+          if(val.startsWith('/buat') || val.startsWith('/rpp') || val.startsWith('/generate') || val.startsWith('/create')){
+            const params = extractSimpleParams(val);
+            openDocModal();
+            setTimeout(()=> {
+              if($('docKelas')) $('docKelas').value = params.kelas || 'Kelas 2';
+              if($('docMapel')) $('docMapel').value = params.mapel && params.mapel!=='{mapel}' ? params.mapel : '';
+              if($('docTopik')) $('docTopik').value = params.topik && params.topik!=='{topik}' ? params.topik : '';
+            }, 250);
+            inputEl.value = '';
+            return;
+          }
+          if(window.quantumEngine && typeof window.quantumEngine.addMessageToChat === 'function'){
+            window.quantumEngine.addMessageToChat('user', val);
+          } else {
+            const m = el('div',{ class:'quantum-message user', text: val });
+            const msgs = $('quantumChatMessages'); if(msgs) msgs.appendChild(m);
+          }
+          inputEl.value = '';
+        }
+      });
+    }
+  }
+
+  /* ----------------- Init & watch for engine DOM readiness ----------------- */
+  function initWhenReady(){
+    attachIntegration();
+    // observe DOM for input row changes (in case SPA re-render)
+    const container = document.body;
+    const obs = new MutationObserver(()=> { attachIntegration(); });
+    obs.observe(container, { childList:true, subtree:true });
+  }
+  if(document.readyState==='complete' || document.readyState==='interactive') setTimeout(initWhenReady,200);
+  else document.addEventListener('DOMContentLoaded', ()=> setTimeout(initWhenReady,200));
+
+  // Expose for debugging
+  window.quantumRppV2 = { openDocModal, aiCallWithFallback, buildPrompt };
+
+})();
+</script></body></html>";
+    const sourceHTML = header + style + html + footer;
+    const blob = new Blob(['\ufeff', sourceHTML], { type: 'application/msword' });
+    if(window.saveAs) saveAs(blob, `${filename}.doc`);
+    else { const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `${filename}.doc`; document.body.appendChild(link); link.click(); link.remove(); }
+  }
+
+  function generateQrImageUrl(text, size=240){ const enc = encodeURIComponent(text); return `https://chart.googleapis.com/chart?cht=qr&chs=${size}x${size}&chl=${enc}&chld=L|1`; }
+
+  /* ================== Suppress visible "chat history saved" notif & background autosave ================== */
+  (function overrideAutoSaveNotif(){
+    // If the app triggers a function like showNotification('chat history saved'), try to intercept common patterns.
+    // 1) Override window-level function if exists
+    const suppressedTexts = ['chat history saved','history saved','chat saved','saved chat'];
+    // override common show/hide notification functions if present
+    ['showNotification','notify','toast','showToast','showAlert'].forEach(fn=>{
+      try {
+        if(window[fn] && typeof window[fn] === 'function'){
+          const orig = window[fn];
+          window[fn] = function(title, message, opts){
+            // if message contains suppressed pattern, swallow; otherwise call original
+            const m = (message||'').toString().toLowerCase();
+            if(suppressedTexts.some(t => m.includes(t))) {
+              // perform silent save behaviour if needed (no UI)
+              console.debug('[suppressed notif]', message);
+              return; // swallow
+            }
+            return orig.apply(this, arguments);
+          };
+        }
+      } catch(e){}
+    });
+
+    // 2) Observe DOM for elements containing these texts and hide them immediately
+    const observer = new MutationObserver(muts => {
+      muts.forEach(m => {
+        (m.addedNodes || []).forEach(node => {
+          try {
+            if(node.nodeType === 1){
+              const txt = node.innerText && node.innerText.toLowerCase();
+              if(txt && suppressedTexts.some(t => txt.includes(t))){
+                node.style.display = 'none';
+                console.debug('[suppressed DOM notif]', txt);
+              }
+            }
+          } catch(e){}
+        });
+      });
+    });
+    observer.observe(document.body, { childList:true, subtree:true });
+    // 3) If app uses local autosave timer, we won't remove saving logic; we only hide visual indicators.
+  })();
+
+  /* ================== Attach integration to input send flow & slash command support ================== */
+  function attachIntegration(){
+    createTinyTrigger();
+    const inputEl = $('quantumChatInput');
+    const sendBtn = $('sendQuantumMessage');
+    if(!inputEl || !sendBtn) return;
+
+    // send button listener for slash commands (non-intrusive)
+    if(!sendBtn.__rpp_allin_attached){
+      sendBtn.__rpp_allin_attached = true;
+      sendBtn.addEventListener('click', async (e) => {
+        const val = (inputEl.value || '').trim();
+        if(!val) return;
+        // support: /buat, /rpp, /generate triggers modal prefill
+        const triggers = ['/buat','/rpp','/generate','/create'];
+        const lower = val.toLowerCase();
+        if(triggers.some(t => lower.startsWith(t))){
+          // prefill with extraction and open modal
+          const pre = extractSimpleParams(val);
+          openDocModal({ kelas: pre.kelas, mapel: pre.mapel !== '{mapel}' ? pre.mapel : '', topik: pre.topik !== '{topik}' ? pre.topik : '' });
+          inputEl.value = '';
+          return;
+        }
+        // otherwise send as normal (preserve engine behavior)
+        if(window.quantumEngine && typeof window.quantumEngine.addMessageToChat === 'function'){
+          window.quantumEngine.addMessageToChat('user', val);
+        } else {
+          // fallback: append
+          const m = el('div',{ class:'quantum-message user', text: val }); const msgs = $('quantumChatMessages'); if(msgs) msgs.appendChild(m);
+        }
+        inputEl.value = '';
+        // if message contains keywords, auto open modal (non-blocking)
+        const intent = detectIntent(val);
+        if(intent) {
+          setTimeout(()=> openDocModal(extractSimpleParams(val)), 200);
+        }
+      });
+    }
+
+    // Enter key
+    if(!inputEl.__rpp_allin_key){
+      inputEl.__rpp_allin_key = true;
+      inputEl.addEventListener('keypress', (e) => {
+        if(e.key === 'Enter' && !e.shiftKey){
+          e.preventDefault();
+          const val = (inputEl.value || '').trim();
+          if(!val) return;
+          const triggers = ['/buat','/rpp','/generate','/create'];
+          const lower = val.toLowerCase();
+          if(triggers.some(t => lower.startsWith(t))){
+            const pre = extractSimpleParams(val);
+            openDocModal({ kelas: pre.kelas, mapel: pre.mapel !== '{mapel}' ? pre.mapel : '', topik: pre.topik !== '{topik}' ? pre.topik : '' });
+            inputEl.value = '';
+            return;
+          }
+          if(window.quantumEngine && typeof window.quantumEngine.addMessageToChat === 'function'){
+            window.quantumEngine.addMessageToChat('user', val);
+          } else {
+            const m = el('div',{ class:'quantum-message user', text: val }); const msgs = $('quantumChatMessages'); if(msgs) msgs.appendChild(m);
+          }
+          inputEl.value = '';
+          const intent = detectIntent(val);
+          if(intent) setTimeout(()=> openDocModal(extractSimpleParams(val)), 200);
+        }
+      });
+    }
+  }
+
+  /* ================== Observe DOM readiness and init ================== */
+  function initWhenReady(){
+    attachIntegration();
+    // ensure trigger present after SPA re-renders
+    const bodyObs = new MutationObserver(()=> { createTinyTrigger(); });
+    bodyObs.observe(document.body, { childList:true, subtree:true });
+  }
+  if(document.readyState === 'complete' || document.readyState === 'interactive') setTimeout(initWhenReady, 200);
+  else document.addEventListener('DOMContentLoaded', ()=> setTimeout(initWhenReady,200));
+
+  /* ================== Expose small API for devs/testing ================== */
+  window.quantumRppAllIn = {
+    openDocModal, createTinyTrigger, aiCallWithFallback, buildPrompt
+  };
+
+  /* ================== End injection ================== */
+})();
+</script></body>
+) === --></body>
+) ==================== --></body>
+) ===== --><style id="quantum-proxy-style">
+  /* simpel styling untuk input proxy di panel developer */
+  #quantumProxyRow{display:flex;gap:8px;align-items:center;margin-top:8px}
+  #quantumProxyUrl{flex:1;padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);background:rgba(0,0,0,0.12);color:var(--quantum-text)}
+  #quantumProxyToggle{padding:8px 12px;border-radius:10px;border:none;cursor:pointer}
+  #quantumProxyNote{font-size:12px;opacity:0.85;margin-top:6px}
+</style></body>
+) ===== --></body>
+) ===== --></body></html><style id="stl-poem-inject-style">
+  /* Signature below Ascend Beyond Code */
+  .stl-signature {
+    font-family: var(--quantum-font-primary, Inter, system-ui, sans-serif);
+    font-size: 0.95rem;
+    color: rgba(255,245,220,0.95);
+    text-align: center;
+    margin-top: 12px;
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 1s ease, transform 1s ease;
+    letter-spacing: 0.02em;
+    font-weight: 500;
+    text-shadow: 0 6px 20px rgba(0,0,0,0.45);
+    line-height: 1.25;
+  }
+  .stl-signature.visible { opacity: 1; transform: translateY(0); }
+  .stl-signature .small {
+    display:block;
+    font-size:.86rem;
+    opacity:.88;
+    margin-top:6px;
+    font-weight:400;
+    color:rgba(255,245,220,0.85);
+  }
+
+  /* Developer Info Poem Button */
+  .stl-poem-wrapper { display:flex; justify-content:center; margin-top:18px; }
+  .stl-poem-btn {
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    padding:8px 16px;
+    font-size:0.9rem;
+    border-radius:10px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    color:rgba(255,255,255,0.9);
+    transition:all .25s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  }
+  .stl-poem-btn:hover { background:rgba(255,255,255,0.12); transform:scale(1.05); }
+
+  /* Poem Overlay */
+  #stlPoemOverlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2147484000;
+backdrop-filter: blur(8px) saturate(120%);
+-webkit-backdrop-filter: blur(8px) saturate(120%);
+background: rgba(3,6,18,0.45);
+}
+#stlPoemCard {
+max-width: 820px;
+width: calc(100% - 48px);
+max-height: 85vh;
+overflow-y: auto;
+margin: 18px;
+padding: 28px 30px;
+border-radius: 14px;
+background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+border: 1px solid rgba(255,255,255,0.06);
+box-shadow: 0 20px 60px rgba(2,6,23,0.6);
+color: var(--quantum-text, #e6eef8);
+font-family: var(--quantum-font-display, "Poppins", system-ui, sans-serif);
+line-height: 1.6;
+transform: translateY(10px) scale(.98);
+opacity: 0;
+transition: all 360ms cubic-bezier(.22,1,.36,1);
+text-align: left;
+scrollbar-width: thin;
+}
+#stlPoemCard.show { transform: translateY(0) scale(1); opacity: 1; }
+#stlPoemText { white-space: pre-wrap; font-size: 1.05rem; }
+#stlPoemMeta {
+margin-top: 14px; font-size: .9rem; opacity: .85;
+display:flex; justify-content:space-between; align-items:center;
+}
+#stlPoemClose {
+cursor: pointer;
+padding:6px 12px;
+border-radius:10px;
+background: rgba(255,255,255,0.03);
+border: 1px solid rgba(255,255,255,0.04);
+}
+@media (max-width:768px){
+#stlPoemCard{ padding:18px; font-size:0.97rem; }
+.stl-poem-btn{ font-size:0.85rem; padding:7px 13px; }
+}
+</style><div id="stlPoemOverlay" aria-hidden="true"><div id="stlPoemCard"><div id="stlPoemText"></div><div id="stlPoemMeta"><span style="font-weight:600;">— stl-UDHIS Poem</span><div id="stlPoemClose">Tutup ✕</div></div></div></div></body>
+
+   ====================================================== --></body></html>
